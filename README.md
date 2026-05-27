@@ -237,12 +237,12 @@ Nginx 也要从 CF 的 IP 段取真实 IP(`set_real_ip_from`),具体见 `DEPLOY.
 ### tenants — 多面板路由(按 Host 头精确匹配)
 ```yaml
 tenants:
-  - name: ergou
-    host: sub.ergou.example.com
+  - name: test1
+    host: sub.test1.example.com
     upstream: http://10.0.1.10:7001     # 你的 V2Board 内网地址,支持 http/https
-  - name: kuaimao
-    host: sub.kuaimao.example.com
-    upstream: https://panel.kuaimao.com
+  - name: test2
+    host: sub.test2.example.com
+    upstream: https://panel.test2.com
 ```
 
 ### detector — 检测规则(可热重载的部分在 Web UI 改)

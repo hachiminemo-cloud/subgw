@@ -107,6 +107,7 @@ func (s *Server) Handler() http.Handler {
 	mux.Handle("/api/ua-rules", s.auth(http.HandlerFunc(s.apiUARulesList)))
 	mux.Handle("/api/ua-rules/add", s.auth(http.HandlerFunc(s.apiUARulesAdd)))
 	mux.Handle("/api/ua-rules/remove", s.auth(http.HandlerFunc(s.apiUARulesRemove)))
+	mux.Handle("/api/ua-rules/seed-defaults", s.auth(http.HandlerFunc(s.apiUARulesSeedDefaults)))
 
 	// IP 白名单
 	mux.Handle("/api/ip-whitelist", s.auth(http.HandlerFunc(s.apiIPWhitelistList)))
@@ -547,6 +548,20 @@ func (s *Server) apiUARulesRemove(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	writeJSON(w, 200, map[string]any{"ok": true})
+}
+
+// apiUARulesSeedDefaults 把内置默认 UA 黑白名单一次性写入(已存在的会更新 note,不会重复)。
+func (s *Server) apiUARulesSeedDefaults(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "POST" {
+		writeJSON(w, 405, map[string]any{"error": "POST only"})
+		return
+	}
+	n, err := s.rules.SeedDefaults()
+	if err != nil {
+		writeJSON(w, 500, map[string]any{"error": err.Error()})
+		return
+	}
+	writeJSON(w, 200, map[string]any{"ok": true, "added": n})
 }
 
 // -------- IP 白名单 --------

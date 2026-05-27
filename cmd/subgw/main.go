@@ -124,6 +124,12 @@ func main() {
 		logger.Error("load dynamic rules", "err", err)
 		os.Exit(1)
 	}
+	// 首次启动若 ua_rules 表为空,种入默认黑白名单(覆盖主流客户端 + 常见扫描器)
+	if seeded, err := rulesMgr.SeedDefaultsIfEmpty(); err != nil {
+		logger.Warn("seed default ua rules failed", "err", err)
+	} else if seeded > 0 {
+		logger.Info("seeded default UA rules", "count", seeded)
+	}
 	det.SetDynamicProviders(
 		rulesMgr.UAWhitelisted,
 		rulesMgr.UABlacklisted,

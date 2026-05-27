@@ -390,6 +390,19 @@ $('#uaWlAddBtn').addEventListener('click', async () => {
   } else toast((r && r.error) || '失败', 'error');
 });
 
+$('#uaSeedBtn').addEventListener('click', async () => {
+  if (!confirm('把内置默认 UA 黑白名单写入(已存在的会保留)?\n白名单约 30+ 个主流客户端,黑名单约 50+ 个扫描器/库。')) return;
+  $('#uaSeedBtn').disabled = true;
+  $('#uaSeedBtn').textContent = '写入中…';
+  const r = await apiPost('/api/ua-rules/seed-defaults', {});
+  $('#uaSeedBtn').disabled = false;
+  $('#uaSeedBtn').textContent = '恢复 / 补全内置默认';
+  if (r && r.ok) {
+    toast('已写入(已存在的会自动更新备注)', 'success');
+    loadUARules();
+  } else toast((r && r.error) || '失败', 'error');
+});
+
 // ---- 云 IP ----
 async function loadCloudStats() {
   const s = await api('/api/cloud-ip');

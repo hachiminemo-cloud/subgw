@@ -227,12 +227,25 @@
 
       <!-- UA 规则 -->
       <section id="tab-ua-rules" class="tab">
+        <div class="card">
+          <div class="card-header">
+            <h3>UA 规则</h3>
+            <div class="actions">
+              <button id="uaSeedBtn">恢复 / 补全内置默认</button>
+            </div>
+          </div>
+          <p class="muted" style="margin:0">
+            内置默认覆盖了 V2board 真实识别的 18 个客户端(Clash 系列 / sing-box 系列 / v2rayN / Surge 等),
+            以及 50+ 条常见扫描器、HTTP 库、bot 关键字的黑名单。
+            首次启动会自动种入,可以放心删任意条,需要时点右上「恢复 / 补全内置默认」会把缺失的补回。
+          </p>
+        </div>
         <div class="row-2col">
           <div>
             <div class="card">
               <h3>添加 UA 黑名单(正则)</h3>
               <div class="filter-bar">
-                <input id="uaBlPattern" placeholder="如 ^curl/ 或 ^python-requests">
+                <input id="uaBlPattern" placeholder="如 ^curl/ 或 (?i)spider">
                 <input id="uaBlNote" placeholder="备注">
                 <button class="primary" id="uaBlAddBtn">添加</button>
               </div>

@@ -1,0 +1,145 @@
+# subgw 配置范例
+# 启动:subgw -c /etc/subgw/config.yml
+
+# 订阅网关监听地址。前面挂 Nginx/Caddy 终止 TLS,这里只听本地 HTTP。
+listen: "127.0.0.1:8443"
+
+# Web 管理面监听地址。生产建议绑 127.0.0.1,然后用 Nginx 反代到一个独立的管理域名 + 加 IP 白名单。
+admin_listen: "127.0.0.1:9090"
+
+# HMAC salt 文件路径。首次启动若不存在会自动生成(权限 600)。
+hmac_salt_file: "/var/lib/subgw/salt"
+
+storage:
+  sqlite_path: "/var/lib/subgw/subgw.db"
+  retention:
+    events: 30d        # 请求日志保留期
+    incidents: 90d     # 异常事件保留期
+  batch_flush_interval: 1s
+  batch_flush_size: 100
+
+# 真实 IP 提取。trust_proxies 只把来自这些地址的 X-Forwarded-* 当真。
+real_ip:
+  trust_headers:
+    - "CF-Connecting-IP"
+    - "X-Real-IP"
+    - "X-Forwarded-For"
+  trust_proxies:
+    - "127.0.0.1"
+    - "::1"
+
+# 订阅路径,支持 query token 和 path token 两种。
+paths:
+  subscribe:
+    - "/api/v1/client/subscribe"
+    # - "/sub/{token}"
+
+# 多面板支持。Host 头精确匹配 host 字段。
+tenants:
+  - name: "default"
+    host: "sub.example.com"
+    upstream: "http://127.0.0.1:7001"
+
+  # - name: "ergou"
+  #   host: "sub.ergou.example.com"
+  #   upstream: "http://127.0.0.1:7001"
+  # - name: "kuaimao"
+  #   host: "sub.kuaimao.example.com"
+  #   upstream: "http://127.0.0.1:7002"
+
+# 规则引擎
+detector:
+  observe_only: false              # true=只记录不拦截。建议上线先 true 观察 3-7 天再开
+  windows:
+    short: 5m
+    mid: 1h
+    long: 24h
+  rules:
+    - name: token_freq_extreme
+      desc: 单 token 5 分钟内 >30 次,扫描特征
+      when:
+        token_freq:
+          window: 5m
+          gte: 30
+      severity: red
+
+    - name: token_freq_high
+      desc: 单 token 1 小时 >120 次
+      when:
+        token_freq:
+          window: 1h
+          gte: 120
+      severity: orange
+
+    - name: token_multi_ip
+      desc: 单 token 5 分钟多 IP(共享/扫描)
+      when:
+        token_distinct_ips:
+          window: 5m
+          gte: 5
+      severity: orange
+
+    - name: ip_multi_token
+      desc: 单 IP 10 分钟内尝试 >=3 个不同 token,撞库
+      when:
+        ip_distinct_tokens:
+          window: 10m
+          gte: 3
+      severity: red
+
+    - name: bad_ua
+      desc: 可疑 UA
+      when:
+        ua_match_any:
+          - "^curl/"
+          - "^python-requests"
+          - "^Go-http-client"
+          - "^Wget/"
+          - "^$"
+      severity: orange
+
+  whitelist:
+    ua_prefixes:
+      - "ClashforWindows"
+      - "ClashX"
+      - "Stash"
+      - "mihomo"
+      - "Shadowrocket"
+      - "v2rayN"
+      - "v2rayNG"
+      - "sing-box"
+      - "Quantumult"
+    ips:
+      # - "1.2.3.4"
+
+# severity -> action 映射。pass/slow/fake/deny
+actions:
+  yellow: slow
+  orange: fake
+  red: deny
+
+faker:
+  # 黑洞 IP 池。默认用 RFC5737 文档专用网段,客户端连不上但格式合法。
+  blackhole_ips:
+    - "192.0.2.1"
+    - "192.0.2.2"
+    - "192.0.2.3"
+    - "198.51.100.1"
+    - "198.51.100.2"
+    - "203.0.113.1"
+    - "203.0.113.2"
+  node_count: 8
+
+notifier:
+  telegram:
+    enabled: false
+    bot_token: ""        # 通过 subgw 主动调用 bot API,bot 需自行创建
+    chat_id: ""
+    throttle: 5m         # 同类告警最少间隔
+
+admin:
+  username: "admin"
+  # 用 `subgw hashpwd <password>` 生成
+  password_hash: ""
+  session_ttl: 12h
+  session_key: ""        # 留空自动生成

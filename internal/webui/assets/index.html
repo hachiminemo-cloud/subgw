@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>subgw 控制台</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+<div class="app">
+
+  <!-- ============ 左侧导航 ============ -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logo">S</div>
+      subgw
+    </div>
+
+    <div class="sidebar-section">监控</div>
+    <a class="navlink active" data-tab="dashboard">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+      概览
+    </a>
+    <a class="navlink" data-tab="events">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
+      请求日志
+    </a>
+    <a class="navlink" data-tab="incidents">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      异常事件
+    </a>
+
+    <div class="sidebar-section">名单</div>
+    <a class="navlink" data-tab="ip-bans">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+      IP 黑名单
+    </a>
+    <a class="navlink" data-tab="token-bans">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      Token 黑名单
+    </a>
+    <a class="navlink" data-tab="ip-whitelist">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+      IP 白名单
+    </a>
+    <a class="navlink" data-tab="ua-rules">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      UA 规则
+    </a>
+
+    <div class="sidebar-section">检测</div>
+    <a class="navlink" data-tab="cloud-ip">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+      云 IP 库
+    </a>
+
+    <div class="sidebar-section">系统</div>
+    <a class="navlink" data-tab="settings">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      设置
+    </a>
+    <a class="navlink" data-tab="tools">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+      工具
+    </a>
+
+    <div class="spacer"></div>
+
+    <div class="user-box">
+      <div class="avatar" id="userAvatar">A</div>
+      <div>
+        <div class="user-name">admin</div>
+        <div class="muted" style="font-size:11px">subgw v0.1.0</div>
+      </div>
+      <button class="logout-btn" id="logoutBtn" title="退出">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ============ 主区 ============ -->
+  <main class="main">
+    <div class="topbar">
+      <div class="page-title" id="pageTitle">概览</div>
+      <div class="topbar-right">
+        <select id="tenantSel"></select>
+        <select id="windowSel">
+          <option value="1h">1 小时</option>
+          <option value="6h">6 小时</option>
+          <option value="24h" selected>24 小时</option>
+          <option value="168h">7 天</option>
+        </select>
+        <button id="refreshBtn" class="primary">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+          刷新
+        </button>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- 概览 -->
+      <section id="tab-dashboard" class="tab active">
+        <div class="stat-cards" id="summaryCards"></div>
+        <div class="row-2col">
+          <div class="card">
+            <h3>Top 10 IP</h3>
+            <table id="topIPs"><thead><tr><th>IP</th><th style="text-align:right">请求数</th></tr></thead><tbody></tbody></table>
+          </div>
+          <div class="card">
+            <h3>Top 10 Token</h3>
+            <table id="topTokens"><thead><tr><th>token hash</th><th style="text-align:right">请求数</th></tr></thead><tbody></tbody></table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 请求日志 -->
+      <section id="tab-events" class="tab">
+        <div class="card">
+          <div class="filter-bar">
+            <input id="evIP" placeholder="按 IP 过滤">
+            <input id="evToken" placeholder="按 token hash 过滤">
+            <select id="evAction">
+              <option value="">所有动作</option>
+              <option value="pass">pass</option>
+              <option value="slow">slow</option>
+              <option value="fake">fake</option>
+              <option value="deny">deny</option>
+              <option value="block_path">block_path</option>
+            </select>
+            <button class="primary" id="evQuery">查询</button>
+          </div>
+          <div class="datatable">
+            <table>
+              <thead><tr>
+                <th>时间</th><th>动作</th><th>状态</th><th>IP</th><th>token hash</th><th>flag</th><th>路径</th><th>tags</th><th>UA</th>
+              </tr></thead>
+              <tbody id="evTbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 异常事件 -->
+      <section id="tab-incidents" class="tab">
+        <div class="card">
+          <div class="filter-bar">
+            <select id="inSeverity">
+              <option value="">所有等级</option>
+              <option value="yellow">yellow</option>
+              <option value="orange">orange</option>
+              <option value="red">red</option>
+            </select>
+            <button class="primary" id="inQuery">查询</button>
+          </div>
+          <div class="datatable">
+            <table>
+              <thead><tr><th>时间</th><th>等级</th><th>动作</th><th>IP</th><th>token hash</th><th>规则</th><th>说明</th></tr></thead>
+              <tbody id="inTbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- IP 黑名单 -->
+      <section id="tab-ip-bans" class="tab">
+        <div class="card">
+          <div class="card-header">
+            <h3>新增 IP 封禁</h3>
+          </div>
+          <div class="filter-bar">
+            <input id="banIPTarget" placeholder="IP 地址,如 1.2.3.4">
+            <input id="banIPReason" placeholder="原因(可选)">
+            <input id="banIPTTL" placeholder="TTL,如 24h,空=永久" style="width:170px">
+            <button class="primary" id="banIPAddBtn">添加</button>
+          </div>
+        </div>
+        <div class="datatable">
+          <table>
+            <thead><tr><th>IP</th><th>原因</th><th>tags</th><th>创建</th><th>过期</th><th>来源</th><th></th></tr></thead>
+            <tbody id="ipBanTbody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Token 黑名单 -->
+      <section id="tab-token-bans" class="tab">
+        <div class="card">
+          <div class="card-header">
+            <h3>新增 Token 封禁</h3>
+          </div>
+          <div class="filter-bar" style="flex-wrap:wrap">
+            <input id="banTokOriginal" placeholder="V2board token 原文(自动算 hash)" style="min-width:280px">
+            <input id="banTokHash" placeholder="或直接粘 hash(64 位)" style="min-width:280px">
+            <input id="banTokReason" placeholder="原因(可选)">
+            <input id="banTokTTL" placeholder="TTL,如 7d,空=永久" style="width:170px">
+            <button class="primary" id="banTokAddBtn">添加</button>
+          </div>
+          <p class="muted">填左边输入框会自动算出 hash 提交。注意 token 原文不会落库,只存 hash。</p>
+        </div>
+        <div class="datatable">
+          <table>
+            <thead><tr><th>token hash</th><th>原因</th><th>tags</th><th>创建</th><th>过期</th><th>来源</th><th></th></tr></thead>
+            <tbody id="tokenBanTbody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- IP 白名单 -->
+      <section id="tab-ip-whitelist" class="tab">
+        <div class="card">
+          <h3>新增 IP 白名单</h3>
+          <div class="filter-bar">
+            <input id="ipWLTarget" placeholder="IP 或 CIDR,如 1.2.3.4 或 10.0.0.0/8">
+            <input id="ipWLNote" placeholder="备注">
+            <button class="primary" id="ipWLAddBtn">添加</button>
+          </div>
+          <p class="muted">白名单 IP 跳过所有规则检测,直接放行。</p>
+        </div>
+        <div class="datatable">
+          <table>
+            <thead><tr><th>IP / CIDR</th><th>备注</th><th>创建</th><th></th></tr></thead>
+            <tbody id="ipWLTbody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- UA 规则 -->
+      <section id="tab-ua-rules" class="tab">
+        <div class="row-2col">
+          <div>
+            <div class="card">
+              <h3>添加 UA 黑名单(正则)</h3>
+              <div class="filter-bar">
+                <input id="uaBlPattern" placeholder="如 ^curl/ 或 ^python-requests">
+                <input id="uaBlNote" placeholder="备注">
+                <button class="primary" id="uaBlAddBtn">添加</button>
+              </div>
+            </div>
+            <div class="datatable">
+              <table>
+                <thead><tr><th>正则</th><th>备注</th><th>创建</th><th></th></tr></thead>
+                <tbody id="uaBlTbody"></tbody>
+              </table>
+            </div>
+          </div>
+          <div>
+            <div class="card">
+              <h3>添加 UA 白名单(前缀)</h3>
+              <div class="filter-bar">
+                <input id="uaWlPattern" placeholder="如 ClashforWindows 或 v2rayN">
+                <input id="uaWlNote" placeholder="备注">
+                <button class="primary" id="uaWlAddBtn">添加</button>
+              </div>
+            </div>
+            <div class="datatable">
+              <table>
+                <thead><tr><th>前缀</th><th>备注</th><th>创建</th><th></th></tr></thead>
+                <tbody id="uaWlTbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 云 IP 库 -->
+      <section id="tab-cloud-ip" class="tab">
+        <div class="card">
+          <div class="card-header">
+            <h3>云厂商 IP 库</h3>
+            <div class="actions">
+              <button class="primary" id="cloudRefreshBtn">立即更新</button>
+            </div>
+          </div>
+          <div id="cloudStats" class="muted" style="margin-bottom:14px">加载中…</div>
+          <div class="stat-cards" id="cloudProviders"></div>
+        </div>
+        <div class="card">
+          <h3>查询某个 IP 是否在云段</h3>
+          <div class="filter-bar">
+            <input id="cloudCheckIP" placeholder="IP 地址,如 8.8.8.8">
+            <button class="primary" id="cloudCheckBtn">查询</button>
+            <span id="cloudCheckResult" class="muted"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 设置 -->
+      <section id="tab-settings" class="tab">
+        <div class="card">
+          <h3>Telegram 通知</h3>
+          <div class="form-grid">
+            <label style="display:flex;align-items:center;gap:8px;font-weight:500">
+              <input type="checkbox" id="tgEnabled" style="width:auto"> 启用 Telegram 通知
+            </label>
+            <div>
+              <label>Bot Token</label>
+              <input type="password" id="tgBotToken" placeholder="留空 = 不修改;粘贴新 token 即覆盖">
+              <div class="muted" id="tgBotTokenHint" style="margin-top:4px"></div>
+            </div>
+            <div>
+              <label>Chat ID</label>
+              <input id="tgChatID" placeholder="如 -1001234567890 或个人 user_id">
+            </div>
+            <div>
+              <label>Throttle(同类告警最小间隔)</label>
+              <input id="tgThrottle" placeholder="如 5m / 30s / 1h" style="max-width:200px">
+            </div>
+            <div class="form-actions">
+              <button class="primary" id="tgSaveBtn">保存(热生效)</button>
+              <button id="testNotifyBtn">发送测试消息</button>
+              <button class="danger" id="tgClearTokenBtn">清空 token</button>
+            </div>
+          </div>
+          <p class="muted">
+            申请 bot:Telegram 找 <code>@BotFather</code>。
+            查 chat_id:<code>https://api.telegram.org/bot&lt;TOKEN&gt;/getUpdates</code> 拉到日志,找 chat.id。
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>检测规则(YAML 配置,只读)</h3>
+          <pre id="rulesPre" class="mono" style="background:#0f172a;color:#e2e8f0;padding:14px;border-radius:6px;overflow-x:auto;font-size:11.5px;line-height:1.5"></pre>
+          <p class="muted">规则阈值需要改 <code>config.yml</code> 后重启 subgw。UA / IP 白名单和黑名单可以在对应页面动态增删。</p>
+        </div>
+
+        <div class="card">
+          <h3>当前 Tenants(域名 → 上游)</h3>
+          <pre id="tenantsPre" class="mono" style="background:#0f172a;color:#e2e8f0;padding:14px;border-radius:6px;overflow-x:auto;font-size:11.5px"></pre>
+        </div>
+      </section>
+
+      <!-- 工具 -->
+      <section id="tab-tools" class="tab">
+        <div class="card">
+          <h3>Token 原文 → hash</h3>
+          <div class="filter-bar">
+            <input id="hashInput" placeholder="V2board 订阅 token 原文" style="min-width:300px">
+            <button class="primary" id="hashBtn">计算 hash</button>
+            <input id="hashOut" readonly placeholder="结果(SHA256-HMAC)" style="min-width:400px" class="mono">
+          </div>
+          <p class="muted">原文不上传到日志库,本地立即算完返回。用于手动封某用户(粘 hash 到 Token 黑名单)。</p>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="/static/app.js"></script>
+</body>
+</html>

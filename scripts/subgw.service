@@ -1,0 +1,23 @@
+[Unit]
+Description=subgw - V2Board 订阅前置网关
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=subgw
+Group=subgw
+ExecStart=/usr/local/bin/subgw -c /etc/subgw/config.yml
+Restart=on-failure
+RestartSec=3
+LimitNOFILE=65535
+
+# 安全加固
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/subgw
+
+[Install]
+WantedBy=multi-user.target

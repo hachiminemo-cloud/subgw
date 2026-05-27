@@ -1,0 +1,36 @@
+# 编译输出
+/dist/
+*.exe
+*.test
+*.prof
+
+# Go 工具产物
+*.out
+
+# 运行时数据(不该提交)
+*.db
+*.db-wal
+*.db-shm
+salt
+.admin_password.txt
+*.log
+*.pid
+
+# 系统/编辑器
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# 临时 cookie / 测试输出
+cookies*.txt
+/tmp/
+
+# 备份
+*.bak
+*~
+
+# 不要把本地 module 缓存的 lock 之外的杂物带上
+go.work
+go.work.sum
